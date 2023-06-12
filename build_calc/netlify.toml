@@ -1,4 +1,0 @@
-[build]
-  base = "path/to/your/react/app"
-  command = "npm run build"
-  publish = "build_calc"
