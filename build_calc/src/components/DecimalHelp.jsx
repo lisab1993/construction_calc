@@ -43,9 +43,6 @@ const DecimalHelp = () => {
     return outputObj
   };
 
-
-
- 
   const mixedFraction = (num) => {
     //convert the decimal to a fraction
     let wholeNum = ""
@@ -72,11 +69,11 @@ const DecimalHelp = () => {
 
         //if the fraction is larger than a 16th, reduce it to the nearest 16th.
         if (fractionPart.bottom > 16) {
-            output = wholeNum + " " + toSixteenth(decimalPart)
+            output = `${wholeNum} ~ ${toSixteenth(decimalPart)}"`
         } 
         //otherwise, pull the values from the object as they are 
         else {
-            output = wholeNum + " ~ " + fractionPart.top + "/" + fractionPart.bottom
+            output = `${wholeNum} ~ ${fractionPart.top}/${fractionPart.bottom}"`
         }
     }
     //if the number is smaller than 1:
@@ -88,8 +85,8 @@ const DecimalHelp = () => {
   }
 
   const handleSubmit = async (e) => {
-    console.log(mixedFraction(decimalEntry), 'mixed fraction output')
-    // console.log(decimalEntry, " - decimalEntry state right now");
+    e.preventDefault()
+    setOutput(mixedFraction(decimalEntry))
   };
 
   return (
@@ -105,7 +102,7 @@ const DecimalHelp = () => {
         />
         <button onClick={handleSubmit}>Go</button>
       </div>
-      <div></div>
+      <div name="output">{output}</div>
     </>
   );
 };
