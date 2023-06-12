@@ -2,10 +2,20 @@ import React, { useEffect, useState } from "react";
 
 const DecimalHelp = () => {
   const [decimalEntry, setDecimalEntry] = useState(5.375);
+  const [output, setOutput] = useState("")
 
   const handleDecimalChange = (e) => {
     setDecimalEntry(e.target.value);
   };
+
+  const toSixteenth = (largeDecimal) => {
+    //takes a decimal without the whole number (0.xxx)
+    //multiple the decimal by 16
+    let mBySixteen = largeDecimal * 16
+    //round this to the nearest whole number
+    mBySixteen = Math.round(mBySixteen)
+    return mBySixteen + "/" + 16
+  }
 
   const gcd = (a, b) => {
     // this function came from redteam-snippets on github
@@ -23,18 +33,27 @@ const DecimalHelp = () => {
       top = +top + Math.floor(num) * bottom;
     }
     let x = gcd(top, bottom);
-    return top / x + "/" + bottom / x;
+    top = top / x
+    bottom = bottom / x
+    // return top  + "/" + bottom;
+    let outputObj = {
+        "top": top,
+        "bottom": bottom
+    }
+    return outputObj
   };
+
+
 
  
   const mixedFraction = (num) => {
-    //1. pull out the whole number, if applicable
-    //2. don't change it. 
-    //3. everything after the decimal will put use the toFraction function
+    //convert the decimal to a fraction
     let wholeNum = ""
     let decimalPart = ""
+    let output = ""
+    let chair = ""
+    //check if the number is greater than 1
     if (num >= 1){
-        //I need every number to the left of the decimal, in order
         //convert the number to a string
         let textNum = num.toString()
         //split the string into an array
@@ -48,14 +67,24 @@ const DecimalHelp = () => {
         //convert the whole number string into a number
         wholeNum = parseInt(textNum)
         decimalPart = num - wholeNum
+        //fractionPart is an object with the numerator and denomenator separated out
         let fractionPart = toFraction(decimalPart)
-        let output = wholeNum + " ~ " + fractionPart
-        // let decimalFraction = toFraction()
-        return output
-    }else {
-        return toFraction(decimalEntry)
+
+        //if the fraction is larger than a 16th, reduce it to the nearest 16th.
+        if (fractionPart.bottom > 16) {
+            output = wholeNum + " " + toSixteenth(decimalPart)
+        } 
+        //otherwise, pull the values from the object as they are 
+        else {
+            output = wholeNum + " ~ " + fractionPart.top + "/" + fractionPart.bottom
+        }
+    }
+    //if the number is smaller than 1:
+    else {
+        output = toFraction(decimalEntry) 
     }
 
+    return output
   }
 
   const handleSubmit = async (e) => {
@@ -76,6 +105,7 @@ const DecimalHelp = () => {
         />
         <button onClick={handleSubmit}>Go</button>
       </div>
+      <div></div>
     </>
   );
 };
