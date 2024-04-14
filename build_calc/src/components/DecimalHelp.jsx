@@ -2,10 +2,15 @@ import React, { useEffect, useState } from "react";
 
 const DecimalHelp = () => {
   const [decimalEntry, setDecimalEntry] = useState(5.375);
-  const [output, setOutput] = useState("")
+  const [output, setOutput] = useState("");
+  const [unitType, setUnitType] = useState("Inches")
 
   const handleDecimalChange = (e) => {
     setDecimalEntry(e.target.value);
+  };
+
+  const handleUnitChange = (e) => {
+    setUnitType(e.target.value);
   };
 
   const toSixteenth = (largeDecimal) => {
@@ -91,8 +96,17 @@ const DecimalHelp = () => {
 
   return (
     <>
-      <span>Enter your decimal: </span>
+      <h3>Convert A Decimal Into A Fraction</h3>
       <div>
+        <h5>Select Your Unit of Measurement:</h5>
+      <select value={unitType} onChange={handleUnitChange}>
+          <option value="Inches">Inches</option>
+          <option value="Feet">Feet</option>
+          <option value="Yards">Yards</option>
+        </select>
+      </div>
+      <div>
+        <h5>Enter Your Decimal:</h5>
         <input
           type="text"
           name="decimalEntry"
